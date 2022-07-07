@@ -119,7 +119,9 @@ namespace SeverityCleaner
 				try
 				{
 					connection.Connect(node);
-					AdvConnection = node.Connect("SeverityCleaner", false);
+#pragma warning disable CS0618 // Type or member is obsolete
+					AdvConnection = node.Connect("SeverityCleaner");  // Was false
+#pragma warning restore CS0618 // Type or member is obsolete
 				}
 				catch (CommunicationsException)
 				{
@@ -322,12 +324,14 @@ namespace SeverityCleaner
 			return Severities;
 		}
 
-		// Read the Severity Fields in the database
+		// Read the Severity Fields in the database, returns a list of table.field and parenttable names
 		private static Dictionary<string, string> QueryDatabaseForSeverityFields(ClearScada.Client.Advanced.IServer AdvConnection, Options options)
 		{
 			var Fields = new Dictionary<string, string>();
-
-			string sql = "select FieldName, Table from dbfielddef where (FieldName like '%Severity' and Type in (1,12) and Size = 1 and IsWritable = True and StorageType = 0)";
+			// Pick up redirection with % at end of Severity. Pick up alarm reprioritisation redir.
+			string sql = "select FieldName, Table from dbfielddef where " +
+				"( (FieldName like '%Severity%') OR (FieldName = 'CDBAlarmActionPriority.NewPriority') ) " + 
+				" and Type in (1,12) and Size = 1 and IsWritable = True and StorageType = 0";
 			ClearScada.Client.Advanced.IQuery serverQuery = AdvConnection.PrepareQuery(sql, new ClearScada.Client.Advanced.QueryParseParameters());
 			ClearScada.Client.Advanced.QueryResult queryResult = serverQuery.ExecuteSync(new ClearScada.Client.Advanced.QueryExecuteParameters());
 
