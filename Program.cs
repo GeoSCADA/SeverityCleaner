@@ -119,9 +119,10 @@ namespace SeverityCleaner
 				try
 				{
 					connection.Connect(node);
-#pragma warning disable CS0618 // Type or member is obsolete
-					AdvConnection = node.Connect("SeverityCleaner");  // Was false
-#pragma warning restore CS0618 // Type or member is obsolete
+					var conSettings = new ClientConnectionSettings();
+					conSettings.IsLimited = false;
+					conSettings.IsVirtualized = false;
+					AdvConnection = node.Connect("SeverityCleaner", conSettings);
 				}
 				catch (CommunicationsException)
 				{
@@ -602,7 +603,20 @@ namespace SeverityCleaner
 						}
 
 						// Check we still need to do this change, in case we changed a template before
-						int currentSeverity = (int)AdvConnection.GetProperty(new ObjectId((int)entry.RowNumber), fieldname);
+						var severityValue = AdvConnection.GetProperty(new ObjectId((int)entry.RowNumber), fieldname);
+						int currentSeverity;
+						try
+						{
+							//currentSeverity = (int)severityValue;
+							currentSeverity = int.Parse(severityValue.ToString());
+						}
+						catch
+						{
+							Console.WriteLine($"No change for {entry.RowNumber} '{entry.FullName}' Table {entry.TableName} Field {fieldname} " +
+											  $"incorrect field value type {entry.FieldsValues[fieldname]}.");
+							currentSeverity = 0;
+							break;
+						}
 						if (currentSeverity != entry.FieldsValues[fieldname])
 						{
 							if (options.Verbose)
