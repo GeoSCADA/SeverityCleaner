@@ -114,15 +114,19 @@ namespace SeverityCleaner
 
 			using (var connection = new ClearScada.Client.Simple.Connection("SeverityCleaner"))
 			{
-				var node = new ServerNode(options.NodeName, options.Port);
+				// EDIT YOUR CONNECTION SETTINGS ACCORDING TO GEO SCADA VERSION
+				//var node = new ServerNode(ConnectionType.Standard, options.NodeName, options.Port);	// Up to v83
+				var node = new ServerNode(options.NodeName, options.Port);								// From v84 onwards
 				ClearScada.Client.Advanced.IServer AdvConnection; // Used for query interface
 				try
 				{
 					connection.Connect(node);
-					var conSettings = new ClientConnectionSettings();
-					conSettings.IsLimited = false;
-					conSettings.IsVirtualized = false;
-					AdvConnection = node.Connect("SeverityCleaner", conSettings);
+					//AdvConnection = node.Connect("SeverityCleaner");									// Up to v80
+					//AdvConnection = node.Connect("SeverityCleaner", false);							// From v81 to v84
+					var conSettings = new ClientConnectionSettings();									// From v85 onwards
+					conSettings.IsLimited = false;														// From v85 onwards
+					conSettings.IsVirtualized = false;													// From v85 onwards
+					AdvConnection = node.Connect("SeverityCleaner", conSettings);                       // From v85 onwards
 				}
 				catch (CommunicationsException)
 				{
@@ -615,7 +619,7 @@ namespace SeverityCleaner
 							Console.WriteLine($"No change for {entry.RowNumber} '{entry.FullName}' Table {entry.TableName} Field {fieldname} " +
 											  $"incorrect field value type {entry.FieldsValues[fieldname]}.");
 							currentSeverity = 0;
-							break;
+							continue;
 						}
 						if (currentSeverity != entry.FieldsValues[fieldname])
 						{
@@ -625,7 +629,7 @@ namespace SeverityCleaner
 												  $"was {entry.FieldsValues[fieldname]} " +
 												  $"is now {foundseverity} ({severities[foundseverity]}).");
 							}
-							break;
+							continue;
 						}
 						// What we are about to do
 						if ( options.Verbose)
@@ -719,7 +723,7 @@ namespace SeverityCleaner
 		{
 			Console.WriteLine("\nStarting Severity Cleaner with default options.\n" +
 								"Please run from the Command Line to specify options.\n" +
-								"THIS PROGRAM WILL MAKE CHANGES TO YOUR DATABASE.\n");
+								"THIS PROGRAM CAN MAKE CHANGES TO YOUR DATABASE.\n");
 			Console.Write("Type Y and Enter to continue or press Enter to exit this utility: ");
 			var confirm = Console.ReadLine();
 			if (confirm.ToUpper(CultureInfo.InvariantCulture) == "Y")
