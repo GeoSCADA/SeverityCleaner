@@ -12,7 +12,8 @@ namespace SeverityCleaner
 
 	public static class Program
 	{
-		private const string CopyrightMessage = "Copyright (c) 2022 Schneider Electric Software Canada Inc. All Rights Reserved.\n" +
+		private const string CopyrightMessage = "Copyright (c) 2022 Schneider Electric. All Rights Reserved.\n" +
+										"See the license terms and ReadMe files in the source code folder.\n" +
 										"For further information please search\n" +
 										"https://community.exchange.se.com/t5/Geo-SCADA-Knowledge-Base/Resource-Center-Home/ba-p/279133\n" +
 										"\n" +

@@ -2,8 +2,16 @@ Please refer to the file LICENSE.txt for terms relating to this code
 
 Severity Cleaner
 ================
-This program and document are Copyright Schneider Electric 2022. All rights reserved. See the license 
-terms file in this folder.
+This program and document are Copyright Schneider Electric 2022. All rights reserved. 
+See the license terms file in this folder.
+
+**********************************************************************
+SAMPLE CODE FOR EDUCATION ONLY. THIS CODE MAY NOT BE CYBER-SECURE.
+YOU ARE RESPONSIBLE FOR IMPLEMENTING CYBER-SECURITY FEATURES.
+**********************************************************************
+
+This is offered as source code which you can build with Visual 
+Studio. It is not supported or warranted in any way by Schneider Electric.
 
 Introduction
 ------------
