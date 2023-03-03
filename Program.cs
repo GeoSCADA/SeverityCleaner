@@ -135,7 +135,7 @@ namespace SeverityCleaner
 				ClearScada.Client.Advanced.IServer AdvConnection;
 				try
 				{
-					var node = new ServerNode(ConnectionType.Standard, "127.0.0.1", 5481);
+					var node = new ServerNode(ConnectionType.Standard, options.NodeName, options.Port);
 					AdvConnection = node.Connect("SeverityCleaner");
 				}
 #pragma warning restore 612, 618
