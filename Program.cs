@@ -115,20 +115,30 @@ namespace SeverityCleaner
 
 			using (var connection = new ClearScada.Client.Simple.Connection("SeverityCleaner"))
 			{
+				// Replacing this version-specific connection code:
 				// EDIT YOUR CONNECTION SETTINGS ACCORDING TO GEO SCADA VERSION
 				//var node = new ServerNode(ConnectionType.Standard, options.NodeName, options.Port);	// Up to v83
-				var node = new ServerNode(options.NodeName, options.Port);								// From v84 onwards
-				ClearScada.Client.Advanced.IServer AdvConnection; // Used for query interface
+				//var node = new ServerNode(options.NodeName, options.Port);								// From v84 onwards
+				//ClearScada.Client.Advanced.IServer AdvConnection; // Used for query interface
+				//try
+				//{
+				//	connection.Connect(node);
+				//	//AdvConnection = node.Connect("SeverityCleaner");									// Up to v80
+				//	//AdvConnection = node.Connect("SeverityCleaner", false);							// From v81 to v84
+				//	var conSettings = new ClientConnectionSettings();									// From v85 onwards
+				//	conSettings.IsLimited = false;														// From v85 onwards
+				//	conSettings.IsVirtualized = false;													// From v85 onwards
+				//	AdvConnection = node.Connect("SeverityCleaner", conSettings);                       // From v85 onwards
+				//}
+				// With this: version-independent code
+#pragma warning disable 612, 618
+				ClearScada.Client.Advanced.IServer AdvConnection;
 				try
 				{
-					connection.Connect(node);
-					//AdvConnection = node.Connect("SeverityCleaner");									// Up to v80
-					//AdvConnection = node.Connect("SeverityCleaner", false);							// From v81 to v84
-					var conSettings = new ClientConnectionSettings();									// From v85 onwards
-					conSettings.IsLimited = false;														// From v85 onwards
-					conSettings.IsVirtualized = false;													// From v85 onwards
-					AdvConnection = node.Connect("SeverityCleaner", conSettings);                       // From v85 onwards
+					var node = new ServerNode(ConnectionType.Standard, "127.0.0.1", 5481);
+					AdvConnection = node.Connect("SeverityCleaner");
 				}
+#pragma warning restore 612, 618
 				catch (CommunicationsException)
 				{
 					Console.WriteLine("Unable to communicate with Geo SCADA server.");

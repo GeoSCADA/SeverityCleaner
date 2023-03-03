@@ -68,6 +68,12 @@
   <PropertyGroup Condition="'$(ProductCompany)' == 'AVEVA'">
     <ApplicationIcon>AVEVASeverityCleaner.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>SESeverityCleaner.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SeverityCleaner.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClearScada.Client, Version=6.85.8174.1, Culture=neutral, PublicKeyToken=9e16b9dd55e2cd53, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -99,9 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(ProductCompany)' == 'AVEVA'">
-    <Content Include="AVEVASeverityCleaner.ico" />
   </ItemGroup>
   <ItemGroup Condition="'$(ProductCompany)' == 'Schneider Electric'">
     <Content Include="SESeverityCleaner.ico" />
